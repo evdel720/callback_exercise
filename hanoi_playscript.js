@@ -1,26 +1,31 @@
-const HanoiGame = require('./hanoi_game').Game;
-const readline = require('./hanoi_game').readline;
-const reader = require('./hanoi_game').reader;
+'use strict'
 
+const HanoiGame = require('./hanoi_game');
+
+const readline = require('readline');
+const reader = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 let bestgame = new HanoiGame();
 
-function completionCallback() {
+function completionCallback(reader) {
   console.log("Congrats! You won!");
   reader.question("Do you want to play again? (yes/no)", (answer) => {
     if (answer === 'yes') {
       let newGame = new HanoiGame();
-      newGame.run(completionCallback.bind(this));
+      newGame.run(reader, completionCallback);
     } else {
-      reader.close();
       console.log("Bye then.");
+      reader.close();
     }
   });
 }
 
-completionCallback();
+// completionCallback();
 
-bestgame.run(() => completionCallback());
+bestgame.run(reader, completionCallback);
 
 // bestgame.run();
 //construct an array of tower arrays

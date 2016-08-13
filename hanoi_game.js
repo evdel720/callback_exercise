@@ -1,14 +1,10 @@
-const readline = require('readline');
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+'use strict'
 
 function Game() {
   this.stacks = [[1], [3, 2], []];
 }
 
-Game.prototype.promptMove = function(callback){
+Game.prototype.promptMove = function(reader, callback){
   this.print();
   reader.question("Select a tower to take a disc from (0,1,2)", (fromTower) => {
     reader.question("Select a tower to put the disc on (0,1,2)", (toTower) => {
@@ -48,22 +44,20 @@ Game.prototype.isWon = function () {
   return this.stacks[1].length === 3 || this.stacks[2].length === 3;
 };
 
-Game.prototype.run = function(completionCallback) {
-  this.promptMove((fromIdx, toIdx) => {
+Game.prototype.run = function(reader, completionCallback) {
+  this.promptMove(reader, (fromIdx, toIdx) => {
     if (!this.move(fromIdx, toIdx)) {
       console.log("Invalid move.");
     }
     if (this.isWon()) {
-      reader.close();
-      completionCallback();
+      // reader.close();
+      completionCallback(reader);
     } else {
-      this.run(completionCallback);
+      this.run(reader, completionCallback);
     }
 
   });
 };
-//
-// let g = new Game();
-// g.run(() => console.log("You win!"));
 
-module.exports = { Game: Game, readline: readline, reader: reader };
+
+module.exports = Game;
