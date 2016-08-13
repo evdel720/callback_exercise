@@ -28,7 +28,6 @@ function askIfGreaterThan(el1, el2, callback) {
   });
 }
 
-
 function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
   if (i < arr.length - 1) {
     askIfGreaterThan(arr[i], arr[i+1], function (isGreaterThan) {
